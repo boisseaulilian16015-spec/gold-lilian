@@ -323,6 +323,15 @@ a.tv-link:hover{text-decoration:underline;}
     <div class="inner-card"><h4><i class="ti ti-chart-bar"></i>Winrate par paire</h4><div id="d-pair-perf"><p style="font-size:12px;color:var(--t3)">Pas encore de données.</p></div></div>
   </div>
 
+  <!-- ANALYSE PRISE DE PROFIT -->
+  <div class="inner-card gap20">
+    <h4><i class="ti ti-target-arrow"></i>Analyse de la prise de profit</h4>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:16px;line-height:1.4">Sur tes trades gagnants (TP1 atteint au minimum), à quelle fréquence le prix va-t-il jusqu'au bout ? Ça t'aide à ajuster ton scale-out : si le TP final est rarement touché, sécurise plus tôt ; s'il l'est souvent, laisse courir davantage.</div>
+    <div id="d-tp-stats">
+      <p style="font-size:12px;color:var(--t3)">Pas encore de trades gagnants documentés.</p>
+    </div>
+  </div>
+
   <!-- GESTION DES PAIRES -->
   <div class="two-col" style="margin-bottom:20px">
     <div class="inner-card">
@@ -407,6 +416,11 @@ a.tv-link:hover{text-decoration:underline;}
       <div class="kpi pos"><div class="kpi-label"><i class="ti ti-target"></i>Winrate BT</div><div class="kpi-val" id="bs-wr">—</div><div class="kpi-sub">Sur setups terminés</div></div>
       <div class="kpi"><div class="kpi-label"><i class="ti ti-arrows-right-left"></i>R:R moyen</div><div class="kpi-val" id="bs-rr">—</div><div class="kpi-sub">R:R réel moyen BT</div></div>
       <div class="kpi acc"><div class="kpi-label"><i class="ti ti-math"></i>Espérance</div><div class="kpi-val" id="bs-esp">—</div><div class="kpi-sub">Edge théorique</div></div>
+    </div>
+    <div class="inner-card gap20">
+      <h4><i class="ti ti-target-arrow"></i>Analyse de la prise de profit (backtest)</h4>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:16px;line-height:1.4">Sur tes setups backtestés, à quelle fréquence le prix atteint chaque niveau. Utile pour calibrer ton scale-out avant de trader en réel.</div>
+      <div id="bs-tp-stats"><p style="font-size:12px;color:var(--t3)">Pas encore de setups backtestés.</p></div>
     </div>
     <div class="two-col">
       <div class="inner-card"><h4><i class="ti ti-trending-up"></i>Sens du trade</h4><div id="bs-sens"></div></div>
@@ -568,7 +582,7 @@ a.tv-link:hover{text-decoration:underline;}
         <div class="fgrp"><label>R:R théorique</label><input type="number" id="t-rrt" step="0.01"></div>
         <div class="fgrp"><label>Lien TradingView</label><input type="url" id="t-link" placeholder="https://tradingview.com/x/..."></div>
         <hr class="fdivider">
-        <div class="fgrp"><label>Résultat</label><select id="t-res"><option value="">En cours</option><option value="TP1+TP2">TP1 + TP2 atteints</option><option value="TP1+BE">TP1 puis BE</option><option value="TP">TP complet</option><option value="BE">Break Even</option><option value="SL">Stop Loss</option></select></div>
+        <div class="fgrp"><label>Résultat — niveau atteint</label><select id="t-res"><option value="">En cours</option><option value="TPcomplet">TP complet (sorti tout au final)</option><option value="TP2">TP2 atteint (pas le complet)</option><option value="TP1">TP1 atteint (50% pris)</option><option value="BE">Break Even (aucun TP)</option><option value="SL">Stop Loss</option></select></div>
         <div class="fgrp"><label>R:R réel obtenu</label><input type="number" id="t-rrr" step="0.01"></div>
         <div class="fgrp"><label>P&amp;L % capital</label><input type="number" id="t-pnl" step="0.01"></div>
         <div class="fgrp"><label>Plan respecté</label><select id="t-plan"><option value="oui">Oui — 100% méthode</option><option value="partiel">Partiel — léger écart</option><option value="non">Non — hors méthode</option></select></div>
@@ -623,11 +637,11 @@ a.tv-link:hover{text-decoration:underline;}
         <div class="fgrp"><label>Date du setup</label><input type="date" id="b-dt"></div>
         <div class="fgrp"><label>Paire</label><select id="b-pair"></select></div>
         <div class="fgrp"><label>Sens</label><select id="b-dir"><option value="buy">Achat</option><option value="sell">Vente</option></select></div>
-        <div class="fgrp"><label>Biais H4</label><select id="b-h4"><option value="align">Aligné</option><option value="contre">Contre-tendance</option><option value="range">Range</option></select></div>
-        <div class="fgrp"><label>Confirmations</label><select id="b-conf"><option value="3/3">3/3 — Trendline + BOS + EMA</option><option value="3/3+">3/3+ — Toutes UT alignées</option><option value="2/3">2/3 — Deux confirmations</option></select></div>
-        <div class="fgrp"><label>Qualité</label><select id="b-qual"><option value="A+">A+</option><option value="A">A</option><option value="B">B</option></select></div>
+        <div class="fgrp"><label>Biais du jour (H4/H1)</label><select id="b-h4"><option value="align">Aligné</option><option value="contre">Contre le biais</option><option value="range">Range</option></select></div>
+        <div class="fgrp"><label>Confirmations</label><select id="b-conf"><option value="complet">Setup complet — trendline + compression + cassure M5</option><option value="complet+rsi">Complet + divergence RSI (bonus)</option><option value="partiel">Partiel — une confirmation manque</option></select></div>
+        <div class="fgrp"><label>Qualité</label><select id="b-qual"><option value="A+">A+ — complet + divergence RSI</option><option value="A">A — complet sans divergence</option><option value="B">B — doute</option></select></div>
         <div class="fgrp"><label>R:R théorique</label><input type="number" id="b-rrt" step="0.01"></div>
-        <div class="fgrp"><label>Résultat</label><select id="b-res"><option value="TP">TP atteint</option><option value="BE">Break Even</option><option value="SL">SL touché</option></select></div>
+        <div class="fgrp"><label>Résultat — niveau atteint</label><select id="b-res"><option value="TPcomplet">TP complet</option><option value="TP2">TP2 atteint</option><option value="TP1">TP1 atteint</option><option value="BE">Break Even</option><option value="SL">SL touché</option></select></div>
         <div class="fgrp"><label>R:R réel</label><input type="number" id="b-rrr" step="0.01"></div>
         <div class="fgrp"><label>Plan respecté</label><select id="b-plan"><option value="oui">Oui</option><option value="non">Non</option></select></div>
         <hr class="fdivider">
@@ -822,7 +836,8 @@ const tagSess = s => { if (!s) return '—'; const cls = s==='Londres'?'tag-a':s
 
 function tagRes(r) {
   if (!r) return '<span class="tag tag-pend">En cours</span>';
-  if (r.includes('TP')) return '<span class="tag tag-tp"><i class="ti ti-check"></i>' + r + '</span>';
+  const short = { 'TPcomplet':'TP complet', 'TP2':'TP2', 'TP1':'TP1' };
+  if (r.includes('TP')) return '<span class="tag tag-tp"><i class="ti ti-check"></i>' + (short[r] || r) + '</span>';
   if (r === 'SL') return '<span class="tag tag-sl"><i class="ti ti-x"></i>SL</span>';
   if (r === 'BE') return '<span class="tag tag-be"><i class="ti ti-minus"></i>BE</span>';
   if (r === 'never') return '<span class="tag tag-pend">Non déclenché</span>';
@@ -1126,6 +1141,9 @@ function renderDash() {
 
   document.getElementById('d-pair-perf').innerHTML = barRows(trades, t => t.pair);
 
+  // ═══ ANALYSE PRISE DE PROFIT (fonction partagée) ═══
+  document.getElementById('d-tp-stats').innerHTML = tpBreakdown(done, 'tes trades réels');
+
   // Progression validation edge vers 30 trades
   const n = done.length;
   const pct = Math.min(n / 30 * 100, 100);
@@ -1260,6 +1278,37 @@ function renderBTStats() {
   document.getElementById('bs-qual').innerHTML = barRows(done, t => t.qual);
   document.getElementById('bs-pair').innerHTML = barRows(done, t => t.pair);
   document.getElementById('bs-h4').innerHTML = barRows(done, t => t.h4==='align'?'H4 aligné':t.h4==='contre'?'H4 contre':'Range', k => k==='H4 aligné'?'var(--g)':k==='H4 contre'?'var(--am)':'var(--t3)');
+  document.getElementById('bs-tp-stats').innerHTML = tpBreakdown(done, 'ces setups backtestés');
+}
+
+// Fonction partagée : analyse de prise de profit (TP1/TP2/complet indépendants)
+function tpBreakdown(done, label) {
+  if (!done.length) return '<p style="font-size:12px;color:var(--t3)">Pas encore de données.</p>';
+  const N = done.length;
+  const reachedTP1 = done.filter(t => ['TP1','TP2','TPcomplet'].includes(t.result)).length;
+  const reachedTP2 = done.filter(t => ['TP2','TPcomplet'].includes(t.result)).length;
+  const reachedFull = done.filter(t => t.result === 'TPcomplet').length;
+  const pTP1 = Math.round(reachedTP1/N*100), pTP2 = Math.round(reachedTP2/N*100), pFull = Math.round(reachedFull/N*100);
+  const bar = (lbl, val, pct, color, sub) => `
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+        <span style="font-size:12px;color:var(--t1);font-weight:500">${lbl}</span>
+        <span class="mono" style="font-size:15px;color:${color};font-weight:500">${pct}% <span style="font-size:10px;color:var(--t3)">(${val})</span></span>
+      </div>
+      <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%;background:${color};box-shadow:0 0 8px ${color}66"></div></div>
+      <div style="font-size:10px;color:var(--t3);margin-top:4px">${sub}</div>
+    </div>`;
+  return bar('TP1 atteint (50% pris)', reachedTP1+'/'+N, pTP1, 'var(--acc)', 'Fréquence à laquelle le prix touche le 1er objectif') +
+    bar('TP2 atteint', reachedTP2+'/'+N, pTP2, 'var(--bl)', 'Fréquence à laquelle le prix atteint le niveau intermédiaire') +
+    bar('TP complet atteint', reachedFull+'/'+N, pFull, 'var(--g)', 'Fréquence à laquelle le prix va jusqu\'au bout') +
+    `<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:11px;line-height:1.5;color:var(--t2)">
+      <i class="ti ti-bulb" style="color:var(--acc-l)"></i> <strong style="color:var(--t1)">Lecture :</strong> ${
+        reachedTP1 < 5 ? 'Continue à backtester — il faut au moins 5-10 setups pour que ces stats soient parlantes.'
+        : pFull >= 55 ? `Sur ${label}, le prix va au bout ${pFull}% du temps. Tu peux laisser courir la partie restante après TP1.`
+        : pFull <= 30 ? `Le prix ne va au bout que ${pFull}% du temps. Le TP2 (${pTP2}%) est un point de sortie plus réaliste pour la 2e partie.`
+        : `Le prix atteint TP2 ${pTP2}% et le complet ${pFull}%. Le TP2 semble ta zone de sortie la plus fiable pour la 2e moitié.`
+      }
+    </div>`;
 }
 
 function renderStats() {
